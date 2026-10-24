@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f6f8fc">
+    <title>StudentHub | Student Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <a class="brand" href="/">
+            <span class="brand-icon">S</span>
+            <span>Student<span class="brand-light">Hub</span>
+                <small>MANAGEMENT PORTAL</small>
+            </span>
+        </a>
+
+        <p class="nav-label">WORKSPACE</p>
+        <a class="nav-link active" href="#dashboard">▦ &nbsp; Dashboard</a>
+        <a class="nav-link" href="#directory">♙ &nbsp; Students</a>
+
+        <div class="sidebar-bottom">
+            <div class="help-card">
+                <span class="help-icon">✦</span>
+                <strong>StudentHub</strong>
+                <p>Simple, organized student management.</p>
+            </div>
+            <div class="profile">
+                <div class="avatar">A</div>
+                <div><strong>Administrator</strong>
+                    <small>Management portal</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">OVERVIEW / STUDENTS</p>
+                <h1>Student dashboard</h1>
+                <p class="subtitle">Manage your student records in one place.</p>
+            </div>
+            <button class="primary-btn" id="addStudentBtn">
+                <span>＋</span> Add student
+            </button>
+        </header>
+
+        <section class="welcome-banner">
+            <div>
+                <span class="banner-label">STUDENT MANAGEMENT</span>
+                <h2>Every student, organized.</h2>
+                <p>Keep student information accurate and accessible.</p>
+            </div>
+            <div class="banner-symbol">S<span>+</span></div>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Total students</span>
+                    <span class="stat-icon blue">♙</span>
+                </div>
+                <strong id="totalStudents">—</strong>
+                <p>All registered students</p>
+            </article>
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Courses represented</span>
+                    <span class="stat-icon purple">▤</span>
+                </div>
+                <strong id="totalCourses">—</strong>
+                <p>Unique courses in records</p>
+            </article>
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Recently enrolled</span>
+                    <span class="stat-icon green">↗</span>
+                </div>
+                <strong id="recentStudents">—</strong>
+                <p>Enrolled in the last 30 days</p>
+            </article>
+        </section>
+
+        <section class="directory-card" id="directory">
+            <div class="section-heading">
+                <div>
+                    <h2>Student directory</h2>
+                    <p>View and manage all student records.</p>
+                </div>
+                <span class="record-count" id="recordCount">0 records</span>
+            </div>
+
+            <div class="toolbar">
+                <label class="search-box">
+                    <span>⌕</span>
+                    <input id="searchInput" type="search"
+                           placeholder="Search by student name...">
+                </label>
+                <label class="filter-box">
+                    <span class="sr-only">Filter by course</span>
+                    <select id="courseFilter">
+                        <option value="">All courses</option>
+                    </select>
+                </label>
+                <button class="secondary-btn" id="refreshBtn">↻ Refresh</button>
+            </div>
+
+            <div id="notice" class="notice" role="status" hidden></div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>STUDENT</th>
+                        <th>COURSE</th>
+                        <th>DATE OF BIRTH</th>
+                        <th>EMAIL</th>
+                        <th>ENROLLED</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                    </thead>
+                    <tbody id="studentTable">
+                    <tr><td colspan="6" class="empty-cell">
+                        Loading student records...
+                    </td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span id="tableSummary">Loading records...</span>
+                <span>Powered by FastAPI + SQLite</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <span>StudentHub · Student Record Management</span>
+            <span>Built with Python and FastAPI</span>
+        </footer>
+    </main>
+</div>
+
+<dialog id="studentDialog" class="student-dialog">
+    <form id="studentForm">
+        <div class="dialog-heading">
+            <div>
+                <p class="eyebrow">STUDENT RECORD</p>
+                <h2 id="dialogTitle">Add a student</h2>
+                <p class="subtitle">Enter the student's details below.</p>
+            </div>
+            <button type="button" class="close-btn" id="closeDialog"
+                    aria-label="Close form">×</button>
+        </div>
+
+        <div class="form-grid">
+            <label class="field full">
+                Full name *
+                <input name="name" required maxlength="100"
+                       placeholder="e.g. Aarav Sharma">
+            </label>
+            <label class="field">
+                Date of birth *
+                <input name="date_of_birth" type="date" required>
+            </label>
+            <label class="field">
+                Email address *
+                <input name="email" type="email" required
+                       placeholder="student@example.com">
+            </label>
+            <label class="field">
+                Phone number
+                <input name="phone" maxlength="20"
+                       placeholder="Contact number">
+            </label>
+            <label class="field">
+                Course
+                <input name="course" maxlength="100"
+                       placeholder="e.g. BTech CSE">
+            </label>
+            <label class="field full">
+                Address
+                <input name="address" maxlength="250"
+                       placeholder="City, state">
+            </label>
+            <label class="field full">
+                Enrollment date
+                <input name="enrollment_date" type="date">
+            </label>
+        </div>
+
+        <p class="form-hint">Fields marked * are required.</p>
+        <div class="dialog-actions">
+            <button type="button" class="secondary-btn" id="cancelBtn">
+                Cancel
+            </button>
+            <button type="submit" class="primary-btn" id="saveBtn">
+                Save student
+            </button>
+        </div>
+    </form>
+</dialog>
+</body>
+</html>
